@@ -5,7 +5,8 @@ const ADMIN_UID = ENV_ADMIN_UID // your user id, get it from https://t.me/userna
 
 const NOTIFY_INTERVAL = 3600 * 1000;
 const fraudDb = 'https://raw.githubusercontent.com/LloydAsp/nfd/main/data/fraud.db';
-const notificationUrl = ''
+const notificationUrl = 'https://raw.githubusercontent.com/wwwxxx0402/nfd/main/notification.txt'
+const startMsgUrl = 'https://raw.githubusercontent.com/wwwxxx0402/nfd/main/startMessage.md';
 
 const chatSessions = {};  // 存储所有聊天会话的状态
 
@@ -117,7 +118,7 @@ async function getUserInfo(chatId) {
 
 async function onMessage(message) {
   if(message.text === '/start'){
-    let startMsg = "\n欢迎使用GunZi的聊天机器人🎉🎉🎉\n\n你现在发送的消息GunZi能够收到❗❗\n\n他会尽快回复你❗❗\n\n"
+    let startMsg = await fetch(startMsgUrl).then(r => r.text())
     await setBotCommands()
     return sendMessage({
       chat_id:message.chat.id,
@@ -129,8 +130,7 @@ async function onMessage(message) {
                   "/help - 显示此帮助信息\n" +
                   "/block - 屏蔽用户 (仅管理员)\n" +
                   "/unblock - 解除屏蔽用户 (仅管理员)\n" +
-                  "/checkblock - 检查用户是否被屏蔽 (仅管理员)\n" +
-                  "更多指令将在后续更新中添加。";
+                  "/checkblock - 检查用户是否被屏蔽 (仅管理员)\n";
     return sendMessage({
       chat_id: message.chat.id,
       text: helpMsg,
